@@ -1,12 +1,22 @@
 
-import React from 'react';
-import { Download } from 'lucide-react';
+import React, { useState } from 'react';
+import { Download, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { generateWordPressExport } from '@/utils/wordpressExport';
+import { generateWordPressExport, exportSection } from '@/utils/wordpressExport';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Footer = () => {
   const handleExportToWordPress = () => {
     generateWordPressExport();
+  };
+  
+  const handleExportSection = (sectionName: string) => {
+    exportSection(sectionName);
   };
 
   return (
@@ -26,8 +36,33 @@ const Footer = () => {
               className="flex items-center gap-2 text-neon-green border-neon-green hover:bg-neon-green hover:text-black"
             >
               <Download className="h-4 w-4" />
-              Exportar para WordPress
+              Exportar Página Completa
             </Button>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="flex items-center gap-2 text-neon-green border-neon-green hover:bg-neon-green hover:text-black"
+                >
+                  <FileText className="h-4 w-4" />
+                  Exportar Seções
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {['Hero', 'Problem', 'Solution', 'Transformation', 
+                  'Audience', 'Authority', 'Offer', 'Faq', 'FinalCta'].map((section) => (
+                  <DropdownMenuItem 
+                    key={section}
+                    onClick={() => handleExportSection(section)}
+                  >
+                    {section}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
             <a href="#" className="hover:text-neon-green">Termos de Uso</a>
             <a href="#" className="hover:text-neon-green">Política de Privacidade</a>
             <a href="#" className="hover:text-neon-green">Contato</a>
